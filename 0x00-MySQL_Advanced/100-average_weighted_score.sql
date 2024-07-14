@@ -1,8 +1,10 @@
 --creates a stored procedure 
-DELIMITER //
+DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUser;
+DELIMITER $$
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
-BEGIN
-     SET weight_average_score = (
+BEGIN DECLARE weight_average_score FLOAT;
+    
+    SET weight_average_score = (
 	SELECT SUM(score * weight) / SUM(weight)
 	FROM users AS user
 	JOIN corrections AS corr 
@@ -14,5 +16,5 @@ BEGIN
     UPDATE users
     SET average_score = weight_average_score
     WHERE id = user_id;
-END //
+END $$
 DELIMITER ;
